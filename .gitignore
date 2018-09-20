@@ -1,0 +1,11 @@
+/.web-server-pid
+/app/config/parameters.yml
+/build/
+/phpunit.xml
+node_modules/
+/vendor/
+/web/bundles/
+composer.lock
+phpunit.xml.dist
+.idea/*
+

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http';
 
 import {Observable, of} from 'rxjs';
 import {catchError, map, tap} from 'rxjs/operators';
-import { User } from "../../entity/user";
+import { User } from '../../entity/user';
 
 
 const httpOptions = {
@@ -22,20 +22,20 @@ export class AuthService {
     }
 
     login(username: string, password: string): Observable<boolean> {
-        let headers = new HttpHeaders();
+        const headers = new HttpHeaders();
         headers.append('content-type', 'application/json');
-        let body = {
-            "account": {
-                "login": username,
-                "password": password
+        const body = {
+            'account': {
+                'login': username,
+                'password': password
             }
         };
 
 
-        return this.http.post('http://localhost/api_managerui/web/app_dev.php/api/login', body, {headers: headers})
+        return this.http.post('http://localhost/Manager-UI/web/app_dev.php/api/login', body, {headers: headers})
             .pipe(
                 map((user: User) => {
-                    if(user) {
+                    if (user) {
                         this.token = user.token;
                         localStorage.setItem('token', user.token);
                         localStorage.setItem('currentUser', user.email);
@@ -43,32 +43,31 @@ export class AuthService {
                     } else {
                         return false;
                     }
-                }),
-                catchError(this.handleError<any>('login'))
-            );
+                }));
 
     }
 
     isLogged(): Observable<boolean> {
-        let headers = new HttpHeaders();
+        const headers = new HttpHeaders();
         headers.append('content-type', 'application/json');
-        let body = {
-            "account": {
-                "username": localStorage.getItem('currentUser'),
-                "token": localStorage.getItem('token')
+        const body = {
+            'account': {
+                'username': localStorage.getItem('currentUser'),
+                'token': localStorage.getItem('token')
             }
         };
 
-        return this.http.post('http://localhost/api_managerui/web/app_dev.php/api/check_login', body, {headers: headers})
+        return this.http.post('http://localhost/Manager-UI/web/app_dev.php/api/check_login', body, {headers: headers})
             .pipe(
                 map(response => {
-                    if(response) {
+                    if (response) {
                         return true;
                     } else {
                         return false;
                     }
                 }),
-                catchError(this.handleError<any>('check login'))
+                catchError(this.handleError<any>('check login')
+                )
             );
     }
 
@@ -94,7 +93,7 @@ export class AuthService {
             this.log(`${operation} failed: ${error.message}`);
 
             // Let the app keep running by returning an empty result.
-            return of(result as T);
+            return of(error as T);
         };
     }
 
