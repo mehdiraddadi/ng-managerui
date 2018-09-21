@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, NO_ERRORS_SCHEMA} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
 
 
 import {AppComponent} from './app.component';
@@ -84,11 +85,13 @@ const customNotifierOptions: NotifierOptions = {
         FormsModule,
         HttpClientModule,
         ReactiveFormsModule,
-        NotifierModule.withConfig(customNotifierOptions)
+        NotifierModule.withConfig(customNotifierOptions),
+        MDBBootstrapModule.forRoot()
     ],
     exports: [RouterModule],
     providers: [AuthService, AuthGuard, AlertService],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    schemas: [ NO_ERRORS_SCHEMA ]
 })
 export class AppModule {
 }
