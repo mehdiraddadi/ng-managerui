@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../services/security/auth.service';
 import {Router} from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertService } from '../services/alert.service';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AlertService} from '../services/alert.service';
+import {NotifierService} from 'angular-notifier';
 
 @Component({
     selector: 'app-login',
@@ -16,10 +17,13 @@ export class LoginComponent implements OnInit {
     erro: string;
     submitted = false;
 
+    notifier: NotifierService;
+
     constructor(private router: Router,
                 private authenticationService: AuthService,
                 private formBuilder: FormBuilder,
-                private alertService: AlertService) {
+                private alertService: AlertService,
+                private notifierService: NotifierService) {
     }
 
     ngOnInit() {
@@ -28,6 +32,7 @@ export class LoginComponent implements OnInit {
             password: ['', Validators.required]
         });
         this.authenticationService.logout();
+        this.notifier = this.notifierService;
     }
 
     get f() {
@@ -45,10 +50,13 @@ export class LoginComponent implements OnInit {
                         }
                     },
                     erro => {
-                    if (erro.error.code === 404) {
-                        this.alertService.error(erro.error.message);
+                        if (erro.error.code === 404) {
+                            this.notifier.notify('error', erro.error.message);
+                            this.alertService.error(erro.error.message);
+                        } else if (erro.error.code === 500) {
+                            this.notifier.notify('error', erro.error.message);
                         }
-                }
+                    }
                 );
         }
     }
