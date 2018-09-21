@@ -15,6 +15,7 @@ const httpOptions = {
 export class AuthService {
 
     public token ;
+    public user: User;
     private heroesUrl = 'http://localhost/api_managerui/web/app_dev.php/api/';
 
     constructor(
@@ -37,6 +38,8 @@ export class AuthService {
                 map((user: User) => {
                     if (user) {
                         this.token = user.token;
+                        this.user = user;
+                        console.log(this.user);
                         localStorage.setItem('token', user.token);
                         localStorage.setItem('currentUser', user.email);
                         return true;
@@ -76,6 +79,10 @@ export class AuthService {
         this.token = null;
         localStorage.removeItem('currentUser');
         localStorage.removeItem('token');
+    }
+
+    getUser(): User {
+        return this.user;
     }
 
     /**

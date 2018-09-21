@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-
+    // implements OnInit
+    // public isConnected = false;
+    //
+    // ngOnInit() {
+    //     if (localStorage.getItem('currentUser') && localStorage.getItem('token')) {
+    //       this.isConnected = true;
+    //     }
+    // }
 }

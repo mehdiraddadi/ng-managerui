@@ -45,7 +45,9 @@ export class LoginComponent implements OnInit {
             this.authenticationService.login(this.username, this.password)
                 .subscribe(result => {
                         if (result) {
-                            this.alertService.success('you are logged with success !', true);
+                            this.notifier.notify('success', 'Welcome ' + localStorage.getItem('currentUser'));
+                            // this.alertService.success('you are logged with success !', true);
+                            console.log(this.authenticationService.user);
                             this.router.navigate(['/']);
                         }
                     },
